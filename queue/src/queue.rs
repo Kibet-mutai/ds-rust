@@ -1,3 +1,5 @@
+
+#[derive(Debug)]
 struct Queue<T> {
     queue: Vec<T>,
 }
@@ -24,6 +26,22 @@ impl<T> Queue<T> {
     }
     pub fn is_empty(&self) -> bool {
         self.queue.is_empty()
+    }
+}
+
+#[derive(Debug)]
+struct Stack {
+    stack_one: Queue<i32>,
+    stack_two: Queue<i32>,
+}
+
+impl Stack {
+    pub fn new() -> Self {
+        Stack { stack_one: Queue::new(), stack_two: Queue::new() }
+    }
+
+    fn add(&mut self, data: i32) {
+        self.stack_one.enqueue(data)
     }
 }
 
