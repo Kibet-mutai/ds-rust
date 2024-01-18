@@ -13,12 +13,17 @@ impl<'a> TextEditor<'a> {
             stack: Vec::new(),
         }
     }
+
+    pub fn append_str(&mut self, st: &str) -> &str {
+        self.s.to_string().push_str(st);
+        &self.s
+    }
     pub fn append(&mut self) {
-       self.stack.push(self.s);
+        self.stack.push(self.s);
     }
 
     pub fn del_char(&mut self, index: usize) -> &str {
-        let index_t = self.s.chars().into_iter().count() as usize; 
+        let index_t = self.s.chars().into_iter().count() as usize;
         if index_t <= index {
             return "";
         }
@@ -45,15 +50,22 @@ impl<'a> TextEditor<'a> {
         let new_s = self.s;
         let mut last_str = String::new();
         for (i, c) in new_s.chars().enumerate() {
-             if i == index {
+            if i == index {
                 last_str.push(c);
             }
         }
         println!("{}", last_str);
     }
 
-    pub fn restore_string(&mut self) -> Option<&str> {
-        self.stack.pop()
+    pub fn restore_string(&mut self) -> String {
+        let prev_state = self.stack.pop();
+        let new_state = prev_state.into_iter().collect::<Vec<_>>();
+        let mut index_t = String::new();
+        for c in new_state.iter() {
+            //new_state[0].chars().enumerate()
+            index_t.push_str(&c[0..1]);
+        }
+        index_t
     }
 }
 
@@ -63,7 +75,7 @@ fn text_editor(s: &str) {
 }
 
 fn main() {
-    let data = "foobar";
+    let data = "abc";
     let mut text_editor = TextEditor::new(data);
     let s = text_editor.s;
     let st = text_editor.append();
@@ -71,5 +83,7 @@ fn main() {
     //println!("{:?}\n", stack);
     //let chare = text_editor.print_char(2);
     //let mut last = text_editor.del_char(1);
-    println!("{:?}\n{}\n{:?}\n", st, s, text_editor.restore_string());
+    println!("{:?}\n{}\n{}\n", st, s, text_editor.restore_string());
 }
+
+
